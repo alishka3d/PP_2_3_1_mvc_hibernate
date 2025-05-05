@@ -19,8 +19,8 @@ public class User {
     private int id;
     @Column
     private String name;
-    @Column
+    @Column(name = "last_name")
     private String lastName;
-    @Column
+    @Column(name = "email")
     private String email;
 }
