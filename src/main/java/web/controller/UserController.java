@@ -3,14 +3,12 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     UserService userService;
@@ -25,19 +23,41 @@ public class UserController {
 //        return "users/users";
 //    }
 
-    @GetMapping("/users")
+    @GetMapping
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users/users";
     }
 
-    @GetMapping
-    public User getUserById(@RequestParam int id) {
-        return userService.getUserById(id);
+//    @GetMapping
+//    public User getUserById(@RequestParam int id) {
+//        return userService.getUserById(id);
+//    }
+
+    @GetMapping("/add")
+    public String addUser(Model model) {
+        model.addAttribute("user", new User());
+        return "users/add_user";
     }
 
-    @PostMapping
-    public void addUser(@ModelAttribute("user") User user) {
+
+    @PostMapping("/create")
+    public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editUser(@PathVariable int id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "users/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable int id) {
+        System.out.println("user = " + user);
+        System.out.println("id = " + id);
+        userService.updateUser(id, user);
+        return "redirect:/users";
     }
 }

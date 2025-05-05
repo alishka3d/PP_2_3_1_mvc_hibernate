@@ -1,25 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Users</title>
+    <title>User List</title>
+    <style>
+        .action-buttons {
+            display: inline-block;
+            margin-right: 5px; /* Отступ между кнопками */
+        }
+        .add-button {
+            margin-bottom: 10px; /* Отступ снизу для кнопки "Add" */
+        }
+    </style>
 </head>
 <body>
-<div>
-    <table border="1">
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-        </tr>
-        <tr th:each="user : ${users}">
-            <td th:utext="${user.id}">id</td>
-            <td th:utext="${user.name}">id</td>
-            <td th:utext="${user.lastName}">id</td>
-            <td th:utext="${user.email}">id</td>
-        </tr>
-    </table>
+<h1>User List</h1>
+
+<div class="add-button">
+    <form th:action="@{/users/add}" method="get">
+        <button type="submit">Add User</button>
+    </form>
 </div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+            <div class="action-buttons">
+                <form th:action="@{/users/edit/{id}(id=${user.id})}" method="get" style="display:inline;">
+                    <button type="submit">Edit</button>
+                </form>
+                <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
