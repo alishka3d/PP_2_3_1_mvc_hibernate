@@ -18,21 +18,11 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/users")
-//    public String index() {
-//        return "users/users";
-//    }
-
     @GetMapping
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users/users";
     }
-
-//    @GetMapping
-//    public User getUserById(@RequestParam int id) {
-//        return userService.getUserById(id);
-//    }
 
     @GetMapping("/add")
     public String addUser(Model model) {
@@ -55,9 +45,13 @@ public class UserController {
 
     @PostMapping("/update/{id}")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable int id) {
-        System.out.println("user = " + user);
-        System.out.println("id = " + id);
         userService.updateUser(id, user);
+        return "redirect:/users";
+    }
+
+    @PostMapping("delete/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 }
