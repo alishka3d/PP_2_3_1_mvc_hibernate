@@ -1,6 +1,7 @@
 package web.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -23,4 +25,11 @@ public class User {
     private String lastName;
     @Column
     private String email;
+
+    public User(int id, String name, String lastName, String email) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }
